@@ -50,7 +50,7 @@ function getMovieDirectors(){
         </style>
     </head>
     <body>
-        <a href="index.php"><button>Home</button></a>
+        <a href="admin.php"><button>Home</button></a>
     <h1>Movie Finder</h1>
         <form method="get">
             Movie Title Keyword:
@@ -69,7 +69,7 @@ function getMovieDirectors(){
                 <input type="radio" name="ratingId" value="5" id="NR">
                 <label for="ratingChoice">NR</label>
                 <br><br>
-            Movie Director: 
+            Movie Director:
             <div class="select-style">
                 <select name="movieDirector">
                     <option disabled selected value> -- select an option -- </option>
@@ -89,18 +89,18 @@ function getMovieDirectors(){
         <?php
             if (isset($_GET['submit'])){
                 global $conn;
-                
+
                 $sql = "SELECT *
                         FROM movieInfo
                         NATURAL JOIN movieGenre
                         NATURAL JOIN movieRating
                         WHERE 1";
-                
+
                 $namedParameters = array();
-                
+
                 if(!empty($_GET['content'])){ //checks whether user typed something into the Quote Content textbox
                     //Following SQL works BUT doesn't prevent SQL INJECTION
-                    //$sql=$sql." AND quote LIKE '% ".$_GET['content']." %'";   
+                    //$sql=$sql." AND quote LIKE '% ".$_GET['content']." %'";
                       $sql=$sql." AND movieName LIKE :content "; //using named parameters to prevent SQL Injection
                     //   $str = strtolower($_GET['content']);
                       $namedParameters[':content'] = "%".$_GET['content']."%";
@@ -115,19 +115,19 @@ function getMovieDirectors(){
                       $sql=$sql." AND movieDirector = :movieDirector "; //using named parameters to prevent SQL Injection
                       $namedParameters[':movieDirector'] = $_GET['movieDirector'];
                 }
-                
+
                 $stmt=$conn->prepare($sql);
                 $stmt->execute($namedParameters);
                 $movies=$stmt->fetchAll(PDO::FETCH_ASSOC);
-                
+
                 foreach ($movies as $movie){
-                    echo $movie['movieName'] . "<br>";  
-                } 
+                    echo $movie['movieName'] . "<br>";
+                }
             }
         ?>
     </div>
     <script>
-        
+
     </script>
     </body>
 </html>
